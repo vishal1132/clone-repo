@@ -8,3 +8,10 @@ ruby gihtub.rb -o <org> -t <token> -n <num-repos>
 ```
 
 num-repos is the total number of repos in your organization, since github api limits querying repos 100 per page.
+
+one liner bash for the entire script though is- 
+```
+for i in {1..2}; do; curl -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/orgs/$org/repos\?per_page\=100\&page\=$i | jq -r '.[] | .ssh_url' | xargs -P 100 -I {} git clone {} ; done
+```
+
+given jq is installed and GH_TOKEN and org is in your env var.
